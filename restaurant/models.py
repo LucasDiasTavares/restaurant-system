@@ -20,7 +20,7 @@ class UserPJ(models.Model):
         return f"Restaurant Owner: {self.username}"
 
 
-class CuisineType(Base):
+class Category(Base):
     name = models.CharField(max_length=100)
 
     def __str__(self):
@@ -72,7 +72,7 @@ class Restaurant(Base):
     email = models.EmailField(max_length=254)
     description = models.TextField(blank=True, null=True)
     owner = models.ForeignKey(UserPJ, related_name='userpj', on_delete=models.CASCADE, default=None)
-    cuisine_type = models.ForeignKey(CuisineType, related_name='type', on_delete=models.CASCADE, default=None)
+    category = models.ForeignKey(Category, related_name='category', on_delete=models.CASCADE, default=None)
     opening_hours = models.ManyToManyField(OpeningHours, related_name='restaurant')
     menu = models.ManyToManyField(Menu, related_name='menu_restaurant', default=None)
 

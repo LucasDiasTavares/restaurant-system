@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, UserPJ, Restaurant, Image, OpeningHours, CuisineType, Rating, VisitHistory
+from .models import User, UserPJ, Restaurant, Image, OpeningHours, Category, Rating, VisitHistory
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -14,10 +14,11 @@ class UserPJSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email']
 
 
-class CuisineTypeSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = CuisineType
-        fields = ['name']
+        model = Category
+        fields = ['name', 'uuid']
 
 
 class OpeningHoursSerializer(serializers.ModelSerializer):
@@ -33,14 +34,14 @@ class ImageSerializer(serializers.ModelSerializer):
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
-    cuisine_type = CuisineTypeSerializer()
+    category = CategorySerializer()
     opening_hours = OpeningHoursSerializer(many=True)
     # images = ImageSerializer(many=True)
 
     class Meta:
         model = Restaurant
         fields = ['id', 'name', 'address', 'city', 'state', 'postal_code', 'phone', 'email', 'description',
-                  'cuisine_type', 'opening_hours']
+                  'category', 'opening_hours']
 
 
 class RatingSerializer(serializers.ModelSerializer):
@@ -55,4 +56,3 @@ class VisitHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = VisitHistory
         fields = ['id', 'user', 'restaurant', 'rating', 'visit_date', 'next_rating_date']
-

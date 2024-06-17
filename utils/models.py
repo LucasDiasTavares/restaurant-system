@@ -1,3 +1,4 @@
+from uuid import uuid4
 from django.db import models
 
 
@@ -8,6 +9,7 @@ class Base(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     deleted_by = models.IntegerField()
     deleted_at = models.DateTimeField(auto_now=True)
+    uuid = models.UUIDField(default=uuid4)
 
     class Meta:
         abstract = True
