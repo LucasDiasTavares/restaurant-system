@@ -1,6 +1,6 @@
 from django.db import models
 from datetime import timedelta
-from utils.models import Base
+from simple_history.models import HistoricalRecords
 
 
 # fake user
@@ -20,8 +20,9 @@ class UserPJ(models.Model):
         return f"Restaurant Owner: {self.username}"
 
 
-class CuisineType(Base):
+class CuisineType(models.Model):
     name = models.CharField(max_length=100)
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name
@@ -40,29 +41,35 @@ class OpeningHours(models.Model):
     open_time = models.TimeField()
     close_time = models.TimeField()
 
+    history = HistoricalRecords()
+
     def __str__(self):
         return f"{self.day_of_week} {self.open_time} - {self.close_time}"
 
 
-class MenuItem(Base):
+class MenuItem(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True)
 
+    history = HistoricalRecords()
+
     def __str__(self):
         return f"{self.name} - {self.price}"
 
 
-class Menu(Base):
+class Menu(models.Model):
     name = models.CharField(max_length=255)
     item = models.ManyToManyField(MenuItem, related_name='menu')
+
+    history = HistoricalRecords()
 
     def __str__(self):
         return self.name
 
 
-class Restaurant(Base):
+class Restaurant(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
@@ -75,6 +82,8 @@ class Restaurant(Base):
     cuisine_type = models.ForeignKey(CuisineType, related_name='type', on_delete=models.CASCADE, default=None)
     opening_hours = models.ManyToManyField(OpeningHours, related_name='restaurant')
     menu = models.ManyToManyField(Menu, related_name='menu_restaurant', default=None)
+
+    history = HistoricalRecords()
 
     def __str__(self):
         average_rating = self.calculate_average_rating()
@@ -89,7 +98,7 @@ class Restaurant(Base):
         return 0
 
 
-class Image(Base):
+class Image(models.Model):
     # AWS integration
     image = models.ImageField(upload_to='images/')
 
