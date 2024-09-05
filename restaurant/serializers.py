@@ -15,9 +15,10 @@ class UserPJSerializer(serializers.ModelSerializer):
 
 
 class CuisineTypeSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = CuisineType
-        fields = ['name']
+        fields = ['name', 'uuid']
 
 
 class OpeningHoursSerializer(serializers.ModelSerializer):
@@ -55,4 +56,3 @@ class VisitHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = VisitHistory
         fields = ['id', 'user', 'restaurant', 'rating', 'visit_date', 'next_rating_date']
-

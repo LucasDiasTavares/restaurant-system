@@ -1,3 +1,4 @@
+from uuid import uuid4
 from django.db import models
 from datetime import timedelta
 from simple_history.models import HistoricalRecords
@@ -23,6 +24,7 @@ class UserPJ(models.Model):
 class CuisineType(models.Model):
     name = models.CharField(max_length=100)
     history = HistoricalRecords()
+    uuid = models.UUIDField(default=uuid4, editable=False, db_index=True)
 
     def __str__(self):
         return self.name
